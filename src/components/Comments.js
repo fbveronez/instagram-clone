@@ -1,28 +1,24 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, Dimensions, Alert, ViewPropTypes } from 'react-native'
 
-
-export default class Comments extends Component {
-  render() {
-    let view = null
-    if (this.props.comments) {
-      view = this.props.comments.map((item, index) => {
-        return (
-          <View style={styles.commentContainer} key={index}>
-            <Text style={styles.nickname}> {item.nickname} </Text>
-            <Text style={styles.comment}> {item.comment} </Text>
-          </View>
-        )
-      })
-    }
-    return (
-      <View style={styles.container}>
-        {view}
-      </View>
-    )
+const Comment = (props) =>{
+  let view = null
+  if (props.comments) {
+    view = props.comments.map((item, index) => {
+      return (
+        <View style={styles.commentContainer} key={index}>
+          <Text style={styles.nickname}> {item.nickname} </Text>
+          <Text style={styles.comment}> {item.comment} </Text>
+        </View>
+      )
+    })
   }
+  return(
+    <View style={styles.container}>
+    {view}
+  </View>
+  )
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -42,3 +38,5 @@ const styles = StyleSheet.create({
     color: '#555'
   }
 })
+
+export default Comment
