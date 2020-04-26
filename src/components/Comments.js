@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { View, Text, StyleSheet, Dimensions, Alert, ViewPropTypes } from 'react-native'
+import React from 'react'
+import { View, Text, StyleSheet} from 'react-native'
 
 const Comment = (props) =>{
   let view = null
