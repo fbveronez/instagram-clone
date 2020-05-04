@@ -1,15 +1,19 @@
 import React from 'react'
+import {connect} from 'react-redux'
 import { View, StyleSheet, Image, Dimensions } from 'react-native'
 import Author from './Author'
 import Comments from './Comments'
 import AddComment from './AddComment'
 const Post = (props) =>{
+
+  const addComment = props.name ? <AddComment  postId={props.id}/> : null 
+
   return (
     <View style={styles.container} >
       <Image source={props.image} style={styles.image} />
       <Author email={props.email} nickname={props.nickname}/>
       <Comments comments={props.comments}/>
-      <AddComment  postId={props.id}/>
+      {addComment}
     </View>
   )
 }
@@ -27,4 +31,10 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Post
+
+const mapStateToProps = ({user}) =>{
+  return{
+    name: user.name
+  }
+}
+export default connect(mapStateToProps,null)(Post)
