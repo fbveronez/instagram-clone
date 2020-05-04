@@ -1,16 +1,25 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { addComment } from '../store/actions/posts'
 import { View, Text, StyleSheet, TextInput, Alert, TouchableWithoutFeedback as TWF } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 
-export default class AddComment extends Component {
+class AddComment extends Component {
   state = {
     comment: '',
     editMode: false,
   }
 
   handleAddComment = () => {
-    Alert.alert("Adicionado", this.state.comment)
+    this.props.onAddComment({
+      postId: this.props.postId,
+      comment: {
+        nickname: this.props.name,
+        comment: this.state.comment,
+      }
+    })
+    this.setState({ comment: '', editMode: false })
   }
   render() {
     let commentArea = null
@@ -21,7 +30,7 @@ export default class AddComment extends Component {
           <TextInput placeholder="Pode comentar..."
             style={styles.input} autoFocus={true}
             value={this.state.comment}
-            onChangeText={comment => this.setState({ comment})}
+            onChangeText={comment => this.setState({ comment })}
             onSubmitEditing={this.handleAddComment} />
           <TWF onPress={() => this.setState({ editMode: false })}>
             <Icon name='times' size={15} color='#555' />
@@ -68,3 +77,16 @@ const styles = StyleSheet.create({
 
 })
 
+const mapStateToProps = ({user}) =>{
+  return{
+    name: user.name
+  }
+}
+
+const mapDispatchToProps = dispatch =>{
+  return{
+    onAddComment: payload => dispatch(addComment(payload))
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(AddComment)
