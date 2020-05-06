@@ -5,7 +5,7 @@ import {
   POST_CREATED
 } from './actionsTypes'
 import axios from 'axios'
-
+import {setMessage} from './message'
 
 export const addPost = post => {
   return dispatch => {
@@ -23,7 +23,7 @@ export const addPost = post => {
       .then(resp => {
         post.image = resp.data.imageUrl
         axios.post('/posts.json', { ...post })
-          .catch(err => console.log(err))
+          .catch(err => {console.log(err)})
           .then(res => {
             dispatch(fetchPosts())
             dispatch(postCreated())
