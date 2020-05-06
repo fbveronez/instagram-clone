@@ -1,55 +1,51 @@
-import { ADD_POST, ADD_COMMENT } from '../actions/actionsTypes'
+import {
+  SET_POSTS,
+  ADD_COMMENT,
+  CREATING_POST,
+  POST_CREATED
+} from '../actions/actionsTypes'
 
 const initialState = {
-  posts: [{
-    id: Math.random(),
-    nickname: 'Fernando Malucao',
-    email: 'fernandomaluco@gmail.com',
-    image: require('../../../assets/imgs/fence.jpg'),
-    comments: [{
-      nickname: 'Maicon',
-      comment: 'Feiosao'
-    }, {
-      nickname: 'Luciana',
-      comment: 'Bonitaoo'
-    }]
-  }, {
-    id: Math.random(),
-    nickname: 'Pedro Paulo',
-    email: 'pedropaulo@gmail.com',
-    image: require('../../../assets/imgs/bw.jpg'),
-    comments: []
-  }]
+  posts: [],
+  isUploading: false,
 }
 
 const reducer = (state = initialState, action) => {
-    switch (action.type) {
-      case ADD_POST:
+  switch (action.type) {
+    case SET_POSTS:
+      return {
+        ...state,
+        posts: action.payload
+      }
+    case ADD_COMMENT:
+      return {
+        ...state,
+        posts: state.posts.map(post => {
+          if (post.id === action.payload.postId) {
+            if (post.comments) {
+              post.comments = post.comments.concat(
+                action.payload.comment
+              )
+            } else {
+              post.comments = [action.payload.comment]
+            }
+          }
+          return post
+        })
+      }
+      case CREATING_POST:
         return {
           ...state,
-          posts: state.posts.concat({
-            ...action.payload
-          })  
+          isUploading: true
         }
-        case ADD_COMMENT:
-          return{
+        case POST_CREATED:
+          return {
             ...state,
-            posts: state.posts.map(post =>{
-              if(post.id === action.payload.postId){
-                if(post.comments){
-                  post.comments = post.comments.concat(
-                    action.payload.comment
-                  )
-                } else{
-                  post.comments = [action.payload.comment]
-                }
-              }
-              return post
-            })
+            isUploading: false
           }
-        default:
-          return state
-    }
+    default:
+      return state
   }
+}
 
 export default reducer
